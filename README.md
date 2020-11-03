@@ -11,32 +11,6 @@ implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version
 implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
 ```
 
-# Coroutine Context
-__Tạo 1 coroutine đơn giản__
-```kotlin
-  CoroutineScope([CoroutineContext]).launch {
-    delay(500) // giống với Handler.postDelayed(500)
-    Log.d(TAG, "Coroutine is easy ${Thread.currentThread().name}")
-  }
-```
-
-__Trong đó [CoroutineContext] có thể là__<br>
-__IO__ : chạy trên background thread. Thường được dùng khi Read, write files, Database, Networking<br>
-__Main__: chạy trên main UI thread<br>
-__Default__: chạy trên background thread. Thường được dùng khi làm các công việc nặng như sorting a list, parse Json.<br>
-
-# Chuyển đổi CoroutineContext trong cùng 1 coroutine
-__withContext([CoroutineContext])__: Sử dụng để chuyển đổi coroutine context trong cùng 1 coroutine<br>
-Ví dụ có thể chuyển đổi luồng từ background sang main thread 1 cách đơn giản như sau
-```kotlin
-  CoroutineScope([CoroutineContext]).launch {
-    Log.d(TAG, "Coroutine is easy ${Thread.currentThread().name}")
-    withContext(Main){
-      Log.d(TAG, "I'm in main thread ${Thread.currentThread().name}")
-    }
-  }
-```
-
 # Suspend Function
 __suspend function__ có khả năng ngừng hay gián đoạn việc thực thi một lát (trạng thái ngừng là trạng thái suspend) và có thể tiếp tục thực thi lại khi cần thiết<br>
 * Suspend function được đánh dấu bằng từ từ khóa suspend
@@ -48,7 +22,37 @@ suspend fun helloWorld() {
 ```
 * Chỉ có thể được gọi suspend function bên trong một suspend function khác hoặc bên trong một coroutine
 
-# Job 
+# Coroutine Context
+__Coroutine Context__ bao gồm:
+* Coroutine Dispatcher<br>
+__IO__ : chạy trên background thread. Thường được dùng khi Read, write files, Database, Networking<br>
+__Main__: chạy trên main UI thread<br>
+__Default__: chạy trên background thread. Thường được dùng khi làm các công việc nặng như sorting a list, parse Json.<br>
+* Coroutine Exception Handler : bắt lỗi trong coroutine
+* Coroutine name : đặt tên cho coroutine, dùng để debug (không quan trọng)
+* Job : giữ nhiệm vụ nắm giữ thông tin về lifecycle của coroutine, cancel coroutine
+
+__Tạo 1 coroutine đơn giản__
+```kotlin
+  CoroutineScope([CoroutineContext]).launch {
+    delay(500) // giống với Handler.postDelayed(500)
+    Log.d(TAG, "Coroutine is easy ${Thread.currentThread().name}")
+  }
+```
+
+## Chuyển đổi CoroutineDispatcher trong cùng 1 coroutine
+__withContext([CoroutineDispatcher])__: Sử dụng để chuyển đổi coroutine context trong cùng 1 coroutine<br>
+Ví dụ có thể chuyển đổi luồng từ background sang main thread 1 cách đơn giản như sau
+```kotlin
+  CoroutineScope([CoroutineContext]).launch {
+    Log.d(TAG, "Coroutine is easy ${Thread.currentThread().name}")
+    withContext(Main){
+      Log.d(TAG, "I'm in main thread ${Thread.currentThread().name}")
+    }
+  }
+```
+
+## Job 
 __Job__ Job giữ nhiệm vụ nắm giữ thông tin về lifecycle của coroutine, cancel coroutine
 ### Cancellation
 ```kotlin
@@ -104,7 +108,7 @@ Ví dụ
     suspend fun addBookCategory(bookCategoryCacheEntity: BookCategoryCacheEntity)
 ```
 
-# Bài toán ứng dụng
+# Bài toán demo
 * Xử lí Search View
 * Đa luồng api
 
