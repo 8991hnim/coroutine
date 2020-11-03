@@ -116,4 +116,5 @@ Ví dụ
 * Handle exception với coroutine
 * Các toán tử của flow
 * Channels
-
+<br>https://www.youtube.com/watch?v=bM7PVVL_5GM
+<br>https://viblo.asia/p/cung-hoc-kotlin-coroutine-phan-1-gioi-thieu-kotlin-coroutine-va-ky-thuat-lap-trinh-bat-dong-bo-gGJ59xajlX2
